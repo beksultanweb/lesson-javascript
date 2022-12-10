@@ -25,7 +25,8 @@ function newTodo() {
         text = document.createElement('div'),
         deleteBtn = document.createElement('img'),
         starBtn = document.createElement('img'),
-        icons = document.createElement('div')
+        icons = document.createElement('div'),
+        checkboxBtn = document.createElement('input')
 
     newEl.className = 'task'
     text.className = 'task-text'
@@ -38,6 +39,10 @@ function newTodo() {
     starBtn.src = './star-solid.svg'
     starBtn.className = 'star'
 
+    checkboxBtn.type = 'checkbox'
+    checkboxBtn.className = 'complete'
+
+    newEl.appendChild(checkboxBtn)
     newEl.appendChild(text)
     icons.appendChild(deleteBtn)
 
@@ -56,11 +61,37 @@ let bindTaskEvents = function(item) {
     // if(item.length > 1) item.forEach(it => deleteBtn = it.querySelector('.delete'))
     // console.log(item);
     // else {}
+    starBtn = item.querySelector('.star')
     deleteBtn = item.querySelector('.delete')
+    checkboxBtn = item.querySelector('.complete')
+    starBtn.onclick = importantTask
     deleteBtn.onclick = deleteTask
+    checkboxBtn.onchange = taskComplete
+    // else if(checkboxBtn.value === 'off') checkboxBtn.onchange = inCompletetask
+    console.log(checkboxBtn.value);
 }
 //bind - связать
 
+let inCompletetask = function() {
+    let li = this.parentNode.parentNode
+    let text = li.querySelector('.task-text')
+    text.style.textDecoration  = "none"
+}
+
+let taskComplete = function(e) {
+    if(e.target.checked === true) console.log('test');
+    else console.log('no');
+    let li = this.parentNode.parentNode
+    let text = li.querySelector('.task-text')
+    text.style.textDecoration  = "line-through"
+}
+
+let importantTask = function() {
+    let li = this.parentNode.parentNode
+    let text = li.querySelector('.task-text')
+    console.log(text);
+    text.innerHTML = text.innerHTML.italics()
+}
 
 let deleteTask = function() {
     let li = this.parentNode.parentNode
@@ -68,17 +99,17 @@ let deleteTask = function() {
     ul.removeChild(li)
 }
 
-let flag = 0
-taskText.forEach(t => t.addEventListener('click', function(e) {
-    if(flag === 0) {
-        e.target.style.textDecoration  = "line-through"
-        flag = 1
-    }
-    else if(flag === 1) {
-        e.target.style.textDecoration  = "none"
-        flag = 0
-    }
-}))
+// let flag = 0
+// taskText.forEach(t => t.addEventListener('click', function(e) {
+//     if(flag === 0) {
+//         e.target.style.textDecoration  = "line-through"
+//         flag = 1
+//     }
+//     else if(flag === 1) {
+//         e.target.style.textDecoration  = "none"
+//         flag = 0
+//     }
+// }))
 
 //Начать интернет магазин делать с детьми легкий
 //Какой проект они придумали для своей идеи, добили ли Cat energy
