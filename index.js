@@ -1,9 +1,14 @@
 let addItem = document.querySelector('.add-item'),
     addBtn = document.querySelector('.add'),
     newItem,
+    searchVal,
     parentDiv = document.querySelector('.tasks'),
-    taskText = document.querySelectorAll('.task-text')
+    searchInput = document.querySelector('.search')
 
+searchInput.addEventListener('input', function(event) {
+    searchVal = event.target.value;
+    search(searchVal)
+})
 
 addItem.addEventListener('input', function(event) {
     newItem = event.target.value;
@@ -64,40 +69,74 @@ let bindTaskEvents = function(item) {
     starBtn = item.querySelector('.star')
     deleteBtn = item.querySelector('.delete')
     checkboxBtn = item.querySelector('.complete')
+
     starBtn.onclick = importantTask
     deleteBtn.onclick = deleteTask
     checkboxBtn.onchange = taskComplete
     // else if(checkboxBtn.value === 'off') checkboxBtn.onchange = inCompletetask
-    console.log(checkboxBtn.value);
 }
 //bind - связать
 
-let inCompletetask = function() {
-    let li = this.parentNode.parentNode
-    let text = li.querySelector('.task-text')
-    text.style.textDecoration  = "none"
-}
+// true, false
 
 let taskComplete = function(e) {
-    if(e.target.checked === true) console.log('test');
-    else console.log('no');
-    let li = this.parentNode.parentNode
+
+    let li = this.parentNode
     let text = li.querySelector('.task-text')
-    text.style.textDecoration  = "line-through"
+    console.log(li);
+    if(e.target.checked === true) {
+        text.style.textDecoration  = "line-through"
+    }
+    else {
+        text.style.textDecoration  = "none"
+    }
 }
 
 let importantTask = function() {
+
     let li = this.parentNode.parentNode
     let text = li.querySelector('.task-text')
     console.log(text);
-    text.innerHTML = text.innerHTML.italics()
+
+    if(text.style.fontWeight === "700") {
+        text.style.fontWeight  = "400"
+    }
+    else {
+        text.style.fontWeight  = "700"
+        theFirsrtChild = parentDiv.firstChild
+        parentDiv.insertBefore(li, theFirsrtChild)
+    }
+
+}
+let deleteTask = function() {
+    let li = this.parentNode.parentNode //img.delete -> div.btns -> task
+    let ul = li.parentNode //task -> tasks
+    ul.removeChild(li) //tasks (task)
 }
 
-let deleteTask = function() {
-    let li = this.parentNode.parentNode
-    let ul = li.parentNode
-    ul.removeChild(li)
+let search = function(value) {
+    console.log('Поиск...', value);
+    taskText = document.querySelectorAll('.task-text'),
+    console.log(taskText);
+
+    taskText.forEach(task => {
+        if(task.innerHTML.toLowerCase().includes(value)) {
+            theFirsrtChild = parentDiv.firstChild
+            parentDiv.insertBefore(task.parentNode, theFirsrtChild)
+            console.log(value, 'найден');
+        }
+    })
 }
+
+// Декомпозиция: задача функционал поиска реализовать
+
+// Как?
+// div.task-text - множесство, лежат внутри div.task
+// input.search - вбили текст
+// Цикл каждый task.text ->
+// сравниванение со всеми div.task-text if(input.value === div.task-text.innerHTML)
+// показывает только его, остальные исчезают
+// */
 
 // let flag = 0
 // taskText.forEach(t => t.addEventListener('click', function(e) {
@@ -119,4 +158,16 @@ let deleteTask = function() {
 Школьный помощник по предметам
 Маме-папе по работе попомщник сайт, интернет магазин
 Игру
+*/
+
+
+/*
+Декомпозиция: задача функционал поиска реализовать
+
+Как?
+div.task-text - множесство, лежат внутри div.task
+input.search - вбили текст
+Цикл каждый task.text ->
+сравниванение со всеми div.task-text if(input.value === div.task-text.innerHTML)
+показывает только его, остальные исчезают
 */
